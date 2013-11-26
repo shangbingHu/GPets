@@ -1,4 +1,4 @@
-__author__ = 'Ice'
+﻿__author__ = 'Ice'
 # -*- coding: utf-8 -*-
 
 import re
@@ -175,7 +175,7 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
     def zhuangbei(self):
         print "start to zhuangbei"
         url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=storage&action=\
-wearsuit&storageid=75887&suitid=4&timestamp=1385481542711'
+wearsuit&storageid=85923&suitid=6&timestamp=1385481542711'
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
         headers["Cookie"] = Constants.MAINCOOKIE
