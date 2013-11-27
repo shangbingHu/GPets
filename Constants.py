@@ -49,3 +49,30 @@ WripUxN%2Fsv0Wf2Ok3A5YjKxj5NFSyReYpi45ai4; 8VcR_2132_lastcheckfeed=366%7C1385396
 Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385396931; 8VcR_2132_wxpet_lastactivity=1385401838; \
 8VcR_2132_sid=DA8h33; 8VcR_2132_lip=110.184.92.29%2C1385402218; \
 8VcR_2132_lastact=1385402231%09plugin.php%09; 8VcR_2132_connect_is_bind=0"
+
+ZHUAN_LEVEL_MAP = {"0": 6,
+                   "1": 7,
+                   "2": 8,
+                   "3": 9,
+                   "4": 10,
+                   "6": 11,
+                   "8": 12,
+                   "10": 13,
+                   "12": 15,
+                   "15": 20,
+                   "18": 16,
+                   "25": 18,
+                   "30": 21,
+                   "35": 22,
+                   "40": 23,
+                   "45": 24,
+                   "50": 25,
+                   "55": 26,
+                   "60": 27,
+                   "65": 31,
+                   "70": 32,
+                   }
+
+SPECIAL_MAP = {33, 34, 35, 38}
+
+ZHUAN_LEVEL_ZHUANGBEI = {}

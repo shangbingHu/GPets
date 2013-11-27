@@ -5,21 +5,64 @@ import urllib
 import httplib2
 import random
 import cStringIO
+import time
 from gzip import GzipFile
 
+
+class Singleton(object):
+    def __new__(cls, *args, **kw):
+        if not hasattr(cls, '_instance'):
+            orig = super(Singleton, cls)
+            cls._instance = orig.__new__(cls, *args, **kw)
+        return cls._instance
+
+class Http(Singleton):
+    print "========= Init ========"
+    http = httplib2.Http()
 
 class Web(object):
     @staticmethod
     def do_get(url, headers=None):
-        http = httplib2.Http()
-        response, content = http.request(url, 'GET', headers=headers)
-        return response,content
+        response = None
+        content = None
+        retry_time = 0
+        http = Http().http
+        while(True):
+            try:
+                if retry_time > 5:
+                    raise Exception("bad server or network")
+                response, content = http.request(url, 'GET', headers=headers)
+                break
+            except Exception, e:
+                time.sleep(120)
+                retry_time += 1
+                print "Error: %s" % str(e)
+                print "retry for %s time" % retry_time
+            finally:
+                pass
+        return response, content
 
     @staticmethod
     def do_post(url, headers=None, data={}):
-        http = httplib2.Http()
-        response, content = http.request(url, 'POST', headers=headers, body=urllib.urlencode(data))
+        response = None
+        content = None
+        retry_time = 0
+        http = Http().http
+        while(True):
+            try:
+                if retry_time > 5:
+                    raise Exception("bad server or network")
+                response, content = http.request(url, 'POST', headers=headers, body=urllib.urlencode(data))
+                break
+            except Exception, e:
+                time.sleep(120)
+                retry_time += 1
+                print "Error: %s" % str(e)
+                print "retry for %s time" % retry_time
+            finally:
+                pass
         return response, content
+
 
     @staticmethod
     def get_cookie(response, ismultiple=False):
@@ -75,3 +118,24 @@ class Utils(object):
         if num > start and num < end:
             return True
         return False
+
+class TimeUtils(object):
+    WEEK_MAP = {
+        "Mon": 1,
+        "Tue": 2,
+        "Wed": 3,
+        "Thu": 4,
+        "Fri": 5,
+        "Sat": 6,
+        "Sun": 7
+    }
+    @staticmethod
+    def getweekandhourfromtime(time):
+        """here, time should be GMT time format"""
+        # "Wed, 27 Nov 2013 04:12:50 GMT3"
+        week = StrUtils.search(time, "(\w+),\s+")
+        hour = StrUtils.search(time, "(\d+):\d+:\d+")
+        week = TimeUtils.WEEK_MAP[week]
+        hour = int(hour) + 8
+        return week, hour
+

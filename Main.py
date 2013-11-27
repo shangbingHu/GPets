@@ -1,4 +1,4 @@
-﻿__author__ = 'Ice'
+__author__ = 'Ice'
 # -*- coding: utf-8 -*-
 
 import re
@@ -27,6 +27,8 @@ class Game(object):
         self.CANZHUAN = 0
         self.point = 0
         self.formhash = 0
+        self.mapid = 1      # which map for killing
+        self.isspecialtime = False
 
     def writetolog(self, content):
         fp = None
@@ -83,13 +85,61 @@ class Game(object):
         rsp, cnt = Utils.Web.do_get(real_url, headers)
         #print cnt  that's ok
 
-    def gotomap(self, mapid):
+    def gotomap(self, mapid=None):
+        self.gotopetattributemenu()
+        if not mapid:
+            mapid = self.selectmapforzhuan(self.ZHUAN)
+        self.mapid = mapid
         print "start to go to map: ", mapid
-        url = 'plugin.php?id=wxpet:pet&index=fight&mapid=%s' % mapid
+        url = 'plugin.php?id=wxpet:pet&index=fight&mapid=%s' % self.mapid
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
         headers["Cookie"] = Constants.MAINCOOKIE
         rsp, cnt = Utils.Web.do_get(real_url, headers)
+        self.jiabei(cnt)
+        return cnt
+
+    def selectmapforzhuan(self, zhuan):
+        print "Zhuan: %s" % zhuan
+        value = "0"
+        last_chaju = 100
+        for key in Constants.ZHUAN_LEVEL_MAP.keys():
+            chaju = int(zhuan) - int(key)
+            if chaju == 0:
+                value = key
+                break
+            if chaju > 0:
+                print key, last_chaju, chaju
+                if last_chaju > chaju:
+                    value = key
+                    last_chaju = chaju
+        return Constants.ZHUAN_LEVEL_MAP[value]
+
+    def gotospecialmap(self, mapid):
+        if self.isspecialtime:
+            if self.mapid != mapid:
+                self.gotomap(mapid)
+                self.refreshzhandoustatus()
+
+    def jiabei(self, mapcnt):
+        print "start to jiabei"
+        def getkaid(mapcnt):
+            kaid = Utils.StrUtils.search(mapcnt, "经验卡\(时间\)&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
+<font color=darkgreen><span id='item(\d+)")
+            if not kaid:
+                kaid = Utils.StrUtils.search(mapcnt, "经验卡\(回合\)&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
+<font color=darkgreen><span id='item(\d+)")
+            return kaid
+        kaid = getkaid(mapcnt)
+        if not kaid:
+            return
+        url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=fight_itemuse&\
+storageid=%s&nums=1&timestamp=1385546091727' % kaid
+        real_url = self.__get_full_url__(self.serverurl, url)
+        headers = Constants.WEBHEADERS
+        headers["Cookie"] = Constants.MAINCOOKIE
+        rsp, cnt = Utils.Web.do_get(real_url, headers)
+        print cnt
 
     def getlastsaltkey(self, cookies):
         return Utils.StrUtils.search(cookies, "8VcR_2132_saltkey=(\w+)")
@@ -119,7 +169,11 @@ action=callmsleep&timestamp=1385401239678'
         self.cookie = Constants.MAINCOOKIE
         rsp, cnt = Utils.Web.do_get(real_url, headers)
 
-    def kill(self):
+    def kill(self, interval=120):
+        """
+        interval:   the time interval to search level and the level to zhuanshen;
+            since before, each time of killing will search, it will cost time
+        """
         print "start to kill monster"
         url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=fight&\
 skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
@@ -127,11 +181,34 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
         headers = Constants.WEBHEADERS
         headers["Cookie"] = Constants.KILLCOOKIE
         rsp, cnt = Utils.Web.do_get(real_url, headers)
-        self.pkcode = Utils.StrUtils.search(cnt, "<pkcode>(\d+)</pkcode>")
-        self.skillcount = int(Utils.StrUtils.search(cnt, "<font color=red>(\d+)\s+</font></td>"))
-        self.LEVEL = Utils.StrUtils.search(cnt, "\[(\d+)\]\]></petlevel>")
-        self.CANZHUAN = Utils.StrUtils.search(cnt, "\[(\d+)\]\]></joblevel>")
-        print "level ==> %s | canzhuan = %s" % (self.LEVEL, self.CANZHUAN)
+        try:
+            self.pkcode = Utils.StrUtils.search(cnt, "<pkcode>(\d+)</pkcode>")
+            self.skillcount = int(Utils.StrUtils.search(cnt, "<font color=red>(\d+)\s+</font></td>"))
+            if interval <= 0:
+                self.LEVEL = Utils.StrUtils.search(cnt, "\[(\d+)\]\]></petlevel>")
+                self.CANZHUAN = Utils.StrUtils.search(cnt, "\[(\d+)\]\]></joblevel>")
+                self.isspecialtime = self.checkwhetherinspecialtime(self.getservertime(rsp))
+            print "level ==> %s | canzhuan = %s" % (self.LEVEL, self.CANZHUAN)
+        except Exception, e:
+            print cnt
+            self.skillcount = 0
+            print "Error -- %s" % str(e)
+        finally:
+            pass
+
+
+    def getservertime(self, rsp):
+        #Date: Wed, 27 Nov 2013 04:12:50 GMT
+        print rsp
+        #servertime = Utils.StrUtils.search(rsp, "Date:(.*)")
+        servertime = rsp["date"]
+        print servertime
+        return servertime
+
+    def checkwhetherinspecialtime(self, atime):
+        week, hour = Utils.TimeUtils.getweekandhourfromtime(atime)
+        if (week in [1, 3, 5, 7] and hour == 21) or (week in [2, 4, 6, 7] and hour == 13):
+            self.isspecialtime = True
 
     def zhuanshen(self):
         print "start to zhuanshen"
@@ -174,12 +251,55 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
 
     def zhuangbei(self):
         print "start to zhuangbei"
-        url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=storage&action=\
-wearsuit&storageid=85923&suitid=6&timestamp=1385481542711'
-        real_url = self.__get_full_url__(self.serverurl, url)
-        headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.MAINCOOKIE
-        Utils.Web.do_get(real_url, headers)
+
+        def mainzhuangbei():
+            def getzhuangbeifromzhuan(zhuan):
+                return zhuan
+
+            def getallzhuangbei():
+                url = 'plugin.php?id=wxpet:pet&index=suit'
+                real_url = self.__get_full_url__(self.serverurl, url)
+                headers = Constants.WEBHEADERS
+                headers["Cookie"] = Constants.MAINCOOKIE
+                rsp, cnt = Utils.Web.do_get(real_url, headers)
+                cnt_list = cnt.splitlines()
+                index = 0
+                dest_index = 0
+                for line in cnt_list:
+                    if line == '<td align="center">精良＆法神权杖</td>':
+                        dest_index = index + 8
+                        break
+                    index += 1
+                storageid = Utils.StrUtils.search(cnt_list[dest_index], "\(\d+,(\d+)\)")
+                suitid = Utils.StrUtils.search(cnt_list[dest_index], "\((\d+),\d+\)")
+                return storageid, suitid
+            storageid, suitid = getallzhuangbei()
+            url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=storage&action=\
+wearsuit&storageid=%s&suitid=%s&timestamp=1385481542711' % (storageid, suitid)
+            real_url = self.__get_full_url__(self.serverurl, url)
+            headers = Constants.WEBHEADERS
+            headers["Cookie"] = Constants.MAINCOOKIE
+            rsp, cnt = Utils.Web.do_get(real_url, headers)
+
+        def jiezhizhuangbei():
+            url = 'plugin.php?id=wxpet:pet&index=storage&itemtype=6'
+            real_url = self.__get_full_url__(self.serverurl, url)
+            headers = Constants.WEBHEADERS
+            headers["Cookie"] = Constants.MAINCOOKIE
+            rsp, cnt = Utils.Web.do_get(real_url, headers)
+            jiezhiid = Utils.StrUtils.search(cnt, 'id="cname(\d+)" value="普通＆经验之戒"')
+            url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=storage&storageid=%s&\
+action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
+            real_url = self.__get_full_url__(self.serverurl, url)
+            headers = Constants.WEBHEADERS
+            headers["Cookie"] = Constants.MAINCOOKIE
+            Utils.Web.do_get(real_url, headers)
+
+        def chibangzhuangbei():
+            pass
+        jiezhizhuangbei()
+        chibangzhuangbei()
+        mainzhuangbei()
 
     def learnskill(self):
         print "start to learnskill"
@@ -244,17 +364,14 @@ wearsuit&storageid=85923&suitid=6&timestamp=1385481542711'
         self.gotomainmenu()
         self.gotopetmenu()
         self.gotomainmap()
-        self.gotomap(20)
+        self.gotomap()
         self.refreshzhandoustatus(refreshlevel=True)
 
-    def jiadianintime(self):
-        level = int(self.LEVEL)
-        if Utils.Utils.between(level, 300, 350) or \
-            Utils.Utils.between(level, 600, 620) or \
-            Utils.Utils.between(level, 1000, 1020):
+    def jiadianintime(self, interval=120):
+        if interval <= 0:
             self.jiadian()
             self.gotomainmap()
-            self.gotomap(20)
+            self.gotomap()
             self.refreshzhandoustatus()
 
     def refreshzhandoustatus(self, refreshlevel=False):
@@ -268,13 +385,21 @@ def test():
     tt.gotomainmenu()
     tt.gotopetmenu()
     tt.gotomainmap()
-    tt.gotomap(20)
+    mapinfo = tt.gotomap()
+    tt.jiabei(mapinfo)
+    interval = 50
     while True:
+        print interval
         tt.skill()
         tt.findmonster()
-        tt.kill()
-        tt.jiadianintime()
+        tt.kill(interval)
+        # if is in special time, go to special map, as kill will refresh the isspecialtime
+        tt.gotospecialmap(33)
+        tt.jiadianintime(interval)
         tt.update()
+        interval -= 1
+        if interval < 0:
+            interval = 50
 
 if __name__ == '__main__':
     test()
