@@ -2,17 +2,25 @@ __author__ = 'Ice'
 # -*- coding: utf-8 -*-
 
 import re
-import time
+import threading
 
 import Constants
 import Utils
 
+lock = threading.RLock()
+zhuansheng_lock = True
+jiadian_lock = True
+
 def getUserInfo(ID):
-    return "merrymax", "861560"
+    return "merrymin", "861560"
 
 class Game(object):
-    def __init__(self):
-        self.username, self.password = getUserInfo(0)
+    def __init__(self, username, password):
+        if not username and not password:
+            self.username, self.password = getUserInfo(0)
+        else:
+            self.username = username
+            self.password = password
         self.serverurl = Constants.SERVERURL
         #here it will be a str
         self.cookie = ""
@@ -42,7 +50,7 @@ class Game(object):
         return self.serverurl + "/" + url
 
     def login(self):
-        print "start to login"
+        print "start to login for %s" % self.username
         url = "member.php?mod=logging&action=login&loginsubmit=yes&infloat=yes&lssubmit=yes&inajax=1"
         real_url = self.__get_full_url__(self.serverurl, url)
         login_data = {
@@ -53,7 +61,8 @@ class Game(object):
                 'handlekey':       "ls"
         }
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.INITCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["INITCOOKIE"]
+        print headers["Cookie"]
         rsp, cnt = Utils.Web.do_post(real_url, headers, login_data)
         self.cookie = Utils.Web.get_cookie(rsp)
 
@@ -81,7 +90,7 @@ class Game(object):
         url = 'plugin.php?id=wxpet:pet&index=map'
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.MAINCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
         #print cnt  that's ok
 
@@ -94,7 +103,7 @@ class Game(object):
         url = 'plugin.php?id=wxpet:pet&index=fight&mapid=%s' % self.mapid
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.MAINCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
         self.jiabei(cnt)
         return cnt
@@ -137,7 +146,7 @@ class Game(object):
 storageid=%s&nums=1&timestamp=1385546091727' % kaid
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.MAINCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
         print cnt
 
@@ -156,8 +165,8 @@ storageid=%s&nums=1&timestamp=1385546091727' % kaid
 action=callmsleep&timestamp=1385401239678'
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.MAINCOOKIE
-        self.cookie = Constants.MAINCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
+        self.cookie = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
 
     def findmonster(self):
@@ -165,8 +174,8 @@ action=callmsleep&timestamp=1385401239678'
         url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=fight_findnpc&timestamp=1385402992136'
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.MAINCOOKIE
-        self.cookie = Constants.MAINCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
+        self.cookie = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
 
     def kill(self, interval=120):
@@ -179,23 +188,19 @@ action=callmsleep&timestamp=1385401239678'
 skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.KILLCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["KILLCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
+        regex = "剩余\s+(\d+)\s+回合.*\[(\d+)\]\]></petlevel>.*\[(\d+)\]\]></joblevel>.*<pkcode>(\d+)</pkcode>"
         try:
-            self.pkcode = Utils.StrUtils.search(cnt, "<pkcode>(\d+)</pkcode>")
-            self.skillcount = int(Utils.StrUtils.search(cnt, "<font color=red>(\d+)\s+</font></td>"))
-            if interval <= 0:
-                self.LEVEL = Utils.StrUtils.search(cnt, "\[(\d+)\]\]></petlevel>")
-                self.CANZHUAN = Utils.StrUtils.search(cnt, "\[(\d+)\]\]></joblevel>")
-                self.isspecialtime = self.checkwhetherinspecialtime(self.getservertime(rsp))
-            print "level ==> %s | canzhuan = %s" % (self.LEVEL, self.CANZHUAN)
+            self.skillcount,self.LEVEL, self.CANZHUAN, self.pkcode = Utils.StrUtils.getstrgroup(cnt, regex)
+            self.isspecialtime = self.checkwhetherinspecialtime(self.getservertime(rsp))
+            print "level ==> %s | to_be_level = %s" % (self.LEVEL, self.CANZHUAN)
         except Exception, e:
             print cnt
             self.skillcount = 0
             print "Error -- %s" % str(e)
         finally:
             pass
-
 
     def getservertime(self, rsp):
         #Date: Wed, 27 Nov 2013 04:12:50 GMT
@@ -215,7 +220,7 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
         url = 'plugin.php?id=wxpet:pet&index=petjob'
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.KILLCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["KILLCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
         formhash = Utils.StrUtils.search(cnt, "formhash=(\w+)")
         url = "plugin.php?id=wxpet:pet&index=petjob&do=buy"
@@ -229,7 +234,7 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
                 'submit':        ""
         }
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.MAINCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_post(real_url, headers, login_data)
 
     def jiadian(self):
@@ -246,7 +251,7 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
                 'updex':        0
         }
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.MAINCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_post(real_url, headers, login_data)
 
     def zhuangbei(self):
@@ -260,7 +265,7 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
                 url = 'plugin.php?id=wxpet:pet&index=suit'
                 real_url = self.__get_full_url__(self.serverurl, url)
                 headers = Constants.WEBHEADERS
-                headers["Cookie"] = Constants.MAINCOOKIE
+                headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
                 rsp, cnt = Utils.Web.do_get(real_url, headers)
                 cnt_list = cnt.splitlines()
                 index = 0
@@ -278,21 +283,21 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
 wearsuit&storageid=%s&suitid=%s&timestamp=1385481542711' % (storageid, suitid)
             real_url = self.__get_full_url__(self.serverurl, url)
             headers = Constants.WEBHEADERS
-            headers["Cookie"] = Constants.MAINCOOKIE
+            headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
             rsp, cnt = Utils.Web.do_get(real_url, headers)
 
         def jiezhizhuangbei():
             url = 'plugin.php?id=wxpet:pet&index=storage&itemtype=6'
             real_url = self.__get_full_url__(self.serverurl, url)
             headers = Constants.WEBHEADERS
-            headers["Cookie"] = Constants.MAINCOOKIE
+            headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
             rsp, cnt = Utils.Web.do_get(real_url, headers)
             jiezhiid = Utils.StrUtils.search(cnt, 'id="cname(\d+)" value="普通＆经验之戒"')
             url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=storage&storageid=%s&\
 action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
             real_url = self.__get_full_url__(self.serverurl, url)
             headers = Constants.WEBHEADERS
-            headers["Cookie"] = Constants.MAINCOOKIE
+            headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
             Utils.Web.do_get(real_url, headers)
 
         def chibangzhuangbei():
@@ -306,7 +311,7 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
         url = "plugin.php?id=wxpet:pet&index=magic"
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.MAINCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
         formhash = Utils.StrUtils.search(cnt, "formhash=(\w+)")
         url = 'plugin.php?id=wxpet:pet&index=magic&action=learn'
@@ -316,7 +321,7 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
                 'magicname':    "msleep"
         }
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.MAINCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_post(real_url, headers, skill_data)
         skill_data = {
                 'formhash':     formhash,
@@ -329,7 +334,7 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
         url = 'plugin.php?id=wxpet:pet&index=mypet'
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.MAINCOOKIE
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
         self.SHI = Utils.StrUtils.search(cnt, "轮回(\d+)世(\d+)转(\d+)级", 1)
         self.ZHUAN = Utils.StrUtils.search(cnt, "轮回(\d+)世(\d+)转(\d+)级", 2)
@@ -354,8 +359,13 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
 
     # 包括转生，加点，学习技能，套装
     def update(self):
+        global zhuansheng_lock
         print self.LEVEL, self.CANZHUAN
         if int(self.LEVEL) < int(self.CANZHUAN):
+            return
+        zhuansheng_lock = False
+        lock.acquire()
+        if zhuansheng_lock:
             return
         self.zhuanshen()
         self.jiadian()
@@ -366,28 +376,37 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
         self.gotomainmap()
         self.gotomap()
         self.refreshzhandoustatus(refreshlevel=True)
+        zhuansheng_lock = True
+        lock.release()
 
     def jiadianintime(self, interval=120):
+        global jiadian_lock
         if interval <= 0:
+            jiadian_lock = False
+            lock.acquire()
+            if jiadian_lock:
+                return
             self.jiadian()
             self.gotomainmap()
             self.gotomap()
             self.refreshzhandoustatus()
+            jiadian_lock = True
+            lock.release()
 
     def refreshzhandoustatus(self, refreshlevel=False):
         self.skillcount = 0
         if refreshlevel:
             self.LEVEL = 0
 
-def test():
-    tt = Game()
+def test(a, b):
+    tt = Game(a, b)
     tt.login()
     tt.gotomainmenu()
     tt.gotopetmenu()
     tt.gotomainmap()
     mapinfo = tt.gotomap()
     tt.jiabei(mapinfo)
-    interval = 50
+    interval = Constants.INTERVAL
     while True:
         print interval
         tt.skill()
@@ -399,9 +418,21 @@ def test():
         tt.update()
         interval -= 1
         if interval < 0:
-            interval = 50
+            interval = Constants.INTERVAL
+
+class MyMultiThread(threading.Thread):
+    def __init__(self, a, b):
+        threading.Thread.__init__(self)
+        self.a = a
+        self.b = b
+
+    def run(self):
+        test(self.a, self.b)
 
 if __name__ == '__main__':
-    test()
+    for i in range(0, 5):
+        thread = MyMultiThread("merrymax", "861560")
+        thread.start()
+
 
 

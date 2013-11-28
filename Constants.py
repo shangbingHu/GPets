@@ -6,8 +6,9 @@ WEBHEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
     "Referer": "http://www.2fuyun.com/forum.php",
     "Accept-Language": "zh-CN,zh;q=0.8",
-    "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) \
-Chrome/28.0.1500.95 Safari/537.36",
+    "User-Agent": "Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 6.1; WOW64; \
+Trident/4.0; GTB7.4; SLCC2; .NET CLR 2.0.50727; .NET CLR 3.5.30729; .NET CLR 3.0.30729; \
+Media Center PC 6.0; .NET4.0C; .NET4.0E; InfoPath.2)",
     "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
     "Accept-Encoding": "gzip, deflate, sdch",
     "Host": "www.2fuyun.com",
@@ -15,6 +16,10 @@ Chrome/28.0.1500.95 Safari/537.36",
     "Cache-Control": "max-age=0",
     "Origin":   "http://www.2fuyun.com"
 }
+PASSWORD = "861560"
+
+COOKIE_MAP = {
+    "merrymax": dict(
 
 INITCOOKIE = "DgQf_2132_saltkey=Vg4eed2e; \
 DgQf_2132_lastvisit=1385380829; DgQf_2132_visitedfid=2; \
@@ -27,7 +32,7 @@ DgQf_2132_viewid=tid_57; DgQf_2132_sid=k9N8yM; tjpctrl=1385397431363; \
 8VcR_2132_sendmail=1; 8VcR_2132_lastact=1385396789%09forum.php%09; \
 8VcR_2132_onlineusernum=28; 8VcR_2132_sid=LTFx8w; \
 Hm_lvt_09b5da143217ac605e94f557407dd45b=1385299626,1385384428; \
-Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385396778"
+Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385396778",
 
 MAINCOOKIE = "8VcR_2132_saltkey=lK5q8L8l; 8VcR_2132_lastvisit=1385393328; \
 8VcR_2132_ulastactivity=382ebs1T3OE7KY5I%2FAd%2FDgF%2BMLsKg4MS6m5R%2FJPV6cp2oxrzHSeQ; \
@@ -37,7 +42,7 @@ WripUxN%2Fsv0Wf2Ok3A5YjKxj5NFSyReYpi45ai4; 8VcR_2132_lastcheckfeed=366%7C1385396
 8VcR_2132_nofavfid=1; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385299626,1385384428; \
 Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385396931; 8VcR_2132_sid=H5haz4; \
 8VcR_2132_lip=110.184.92.29%2C1385400628; 8VcR_2132_lastact=1385400779%09plugin.php%09; \
-8VcR_2132_connect_is_bind=0; 8VcR_2132_wxpet_lastactivity=1385400779"
+8VcR_2132_connect_is_bind=0; 8VcR_2132_wxpet_lastactivity=1385400779",
 
 KILLCOOKIE = "8VcR_2132_saltkey=lK5q8L8l; \
 8VcR_2132_lastvisit=1385393328; \
@@ -49,6 +54,39 @@ WripUxN%2Fsv0Wf2Ok3A5YjKxj5NFSyReYpi45ai4; 8VcR_2132_lastcheckfeed=366%7C1385396
 Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385396931; 8VcR_2132_wxpet_lastactivity=1385401838; \
 8VcR_2132_sid=DA8h33; 8VcR_2132_lip=110.184.92.29%2C1385402218; \
 8VcR_2132_lastact=1385402231%09plugin.php%09; 8VcR_2132_connect_is_bind=0"
+),
+    "merrymin": dict(
+
+INITCOOKIE = "8VcR_2132_saltkey=EM2oI2hc; 8VcR_2132_lastvisit=1385641138; \
+8VcR_2132_sendmail=1; 8VcR_2132_lastact=1385644746%09forum.php%09; \
+8VcR_2132_onlineusernum=56; 8VcR_2132_sid=vOqE9z; \
+Hm_lvt_09b5da143217ac605e94f557407dd45b=1385425121,1385473321,1385491212,1385642836; \
+Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385644746",
+
+MAINCOOKIE = "8VcR_2132_saltkey=EM2oI2hc; 8VcR_2132_lastvisit=1385641138; \
+8VcR_2132_sendmail=1; 8VcR_2132_onlineusernum=56; \
+8VcR_2132_ulastactivity=37454px2BF29BTq%2FX3gSBAiuqBOYM9T6fsSJKlX29ghAB0w16JQ%2F; \
+8VcR_2132_auth=9319G33anC8%2FFVFys3BFLmM54cIsjC0YJxNcMPhSIS6MYLJCe4b28Pb8hs8jx\
+CZt5n%2BAhYvOoLkVOuAGZ9haXQo; 8VcR_2132_lastcheckfeed=465%7C1385644856; \
+8VcR_2132_lip=182.148.123.85%2C1385639820; 8VcR_2132_security_cookiereport=\
+655cebr3ShmHWRfZo4dlnHaqpOTJMlCTGBSM0RLGiJPM%2Blf3St8o; 8VcR_2132_nofavfid=1; \
+8VcR_2132_sid=vOqE9z; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385425121,1385473321,\
+1385491212,1385642836; Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385644857; \
+tjpctrl=1385646657431; 8VcR_2132_lastact=1385644987%09plugin.php%09; \
+8VcR_2132_connect_is_bind=0; 8VcR_2132_wxpet_lastactivity=1385644987",
+
+KILLCOOKIE = "8VcR_2132_saltkey=EM2oI2hc; 8VcR_2132_lastvisit=1385641138; \
+8VcR_2132_ulastactivity=37454px2BF29BTq%2FX3gSBAiuqBOYM9T6fsSJKlX29ghAB0w16JQ%2F; \
+8VcR_2132_auth=9319G33anC8%2FFVFys3BFLmM54cIsjC0YJxNcMPhSIS6MYLJCe4b28Pb8hs8jx\
+CZt5n%2BAhYvOoLkVOuAGZ9haXQo; 8VcR_2132_lip=182.148.123.85%2C1385639820; \
+8VcR_2132_security_cookiereport=655cebr3ShmHWRfZo4dlnHaqpOTJMlCTGBSM0RLGiJPM%2Blf3St8o; \
+8VcR_2132_nofavfid=1; tjpctrl=1385646657431; 8VcR_2132_wxpet_lastactivity=1385644987; \
+8VcR_2132_sid=vOqE9z; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385425121,\
+1385473321,1385491212,1385642836; Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385645077; \
+8VcR_2132_sendmail=1; 8VcR_2132_checkpm=1; 8VcR_2132_lastcheckfeed=465%7C1385645079; \
+8VcR_2132_checkfollow=1; 8VcR_2132_lastact=1385645095%09plugin.php%09; \
+8VcR_2132_connect_is_bind=0"
+    )}
 
 ZHUAN_LEVEL_MAP = {"0": 6,
                    "1": 7,
@@ -76,3 +114,5 @@ ZHUAN_LEVEL_MAP = {"0": 6,
 SPECIAL_MAP = {33, 34, 35, 38}
 
 ZHUAN_LEVEL_ZHUANGBEI = {}
+
+INTERVAL = 2

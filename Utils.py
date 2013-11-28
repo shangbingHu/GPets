@@ -26,7 +26,7 @@ class Web(object):
         response = None
         content = None
         retry_time = 0
-        http = Http().http
+        http = httplib2.Http()
         while(True):
             try:
                 if retry_time > 5:
@@ -47,7 +47,7 @@ class Web(object):
         response = None
         content = None
         retry_time = 0
-        http = Http().http
+        http = httplib2.Http()
         while(True):
             try:
                 if retry_time > 5:
@@ -92,6 +92,14 @@ class StrUtils(object):
         return None
 
     @staticmethod
+    def getstrgroup(given_str, pattern):
+        regex = re.compile(pattern)
+        match = regex.search(given_str)
+        if match:
+            return match.groups()
+        return None
+
+    @staticmethod
     def strtoint(str):
         return int(str)
 
@@ -133,8 +141,7 @@ class TimeUtils(object):
     def getweekandhourfromtime(time):
         """here, time should be GMT time format"""
         # "Wed, 27 Nov 2013 04:12:50 GMT3"
-        week = StrUtils.search(time, "(\w+),\s+")
-        hour = StrUtils.search(time, "(\d+):\d+:\d+")
+        week, hour = StrUtils.getstrgroup(time, "(\w+),.*(\d+):\d+:\d+")
         week = TimeUtils.WEEK_MAP[week]
         hour = int(hour) + 8
         return week, hour
