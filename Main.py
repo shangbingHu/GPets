@@ -1,4 +1,4 @@
-__author__ = 'Ice'
+﻿__author__ = 'Ice'
 # -*- coding: utf-8 -*-
 
 import re
@@ -23,7 +23,6 @@ class Game(object):
             self.password = password
         self.serverurl = Constants.SERVERURL
         #here it will be a str
-        self.cookie = ""
         self.loginhash = ""
         self.lastsaltkey = ""
         self.lastsid = ""
@@ -62,16 +61,14 @@ class Game(object):
         }
         headers = Constants.WEBHEADERS
         headers["Cookie"] = Constants.COOKIE_MAP[self.username]["INITCOOKIE"]
-        print headers["Cookie"]
         rsp, cnt = Utils.Web.do_post(real_url, headers, login_data)
-        self.cookie = Utils.Web.get_cookie(rsp)
 
     def gotomainmenu(self):
         print "start to go to main menu"
         url = 'forum.php'
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = self.cookie
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
 
     # Main page of game
@@ -80,10 +77,10 @@ class Game(object):
         url = 'wxpet-pet.html'
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = self.cookie
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
-        self.updatecookie(rsp)
-        print self.cookie
+        #print cnt
+        #self.updatecookie(rsp)
 
     def gotomainmap(self):
         print "start to go to mainmap"
@@ -158,7 +155,7 @@ storageid=%s&nums=1&timestamp=1385546091727' % kaid
 
     def skill(self):
         print self.skillcount
-        if self.skillcount != 0:
+        if int(self.skillcount) != 0:
             return None
         print "start to use skill"
         url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=fight_callmagic&\
@@ -194,7 +191,7 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
         try:
             self.skillcount,self.LEVEL, self.CANZHUAN, self.pkcode = Utils.StrUtils.getstrgroup(cnt, regex)
             self.isspecialtime = self.checkwhetherinspecialtime(self.getservertime(rsp))
-            print "level ==> %s | to_be_level = %s" % (self.LEVEL, self.CANZHUAN)
+            print "zhuan ==> %s | level ==> %s | to_be_level = %s" % (self.ZHUAN, self.LEVEL, self.CANZHUAN)
         except Exception, e:
             print cnt
             self.skillcount = 0
@@ -271,10 +268,17 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
                 index = 0
                 dest_index = 0
                 for line in cnt_list:
-                    if line == '<td align="center">精良＆法神权杖</td>':
+                    if line == '<td align="center">史诗＆紫龍之杖</td>':
                         dest_index = index + 8
                         break
                     index += 1
+                if not dest_index:
+                    index = 0
+                    for line in cnt_list:
+                        if line == '<td align="center">精良＆法神权杖</td>':
+                            dest_index = index + 8
+                            break
+                        index += 1
                 storageid = Utils.StrUtils.search(cnt_list[dest_index], "\(\d+,(\d+)\)")
                 suitid = Utils.StrUtils.search(cnt_list[dest_index], "\((\d+),\d+\)")
                 return storageid, suitid
@@ -292,7 +296,7 @@ wearsuit&storageid=%s&suitid=%s&timestamp=1385481542711' % (storageid, suitid)
             headers = Constants.WEBHEADERS
             headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
             rsp, cnt = Utils.Web.do_get(real_url, headers)
-            jiezhiid = Utils.StrUtils.search(cnt, 'id="cname(\d+)" value="普通＆经验之戒"')
+            jiezhiid = Utils.StrUtils.search(cnt, 'id="cname(\d+)" value="神器＆永恒之心"')
             url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=storage&storageid=%s&\
 action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
             real_url = self.__get_full_url__(self.serverurl, url)
@@ -301,7 +305,19 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
             Utils.Web.do_get(real_url, headers)
 
         def chibangzhuangbei():
-            pass
+            url = 'plugin.php?id=wxpet:pet&index=storage&itemtype=7'
+            real_url = self.__get_full_url__(self.serverurl, url)
+            headers = Constants.WEBHEADERS
+            headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
+            rsp, cnt = Utils.Web.do_get(real_url, headers)
+            jiezhiid = Utils.StrUtils.search(cnt, 'id="cname(\d+)" value="完美＆经验之翼"')
+            url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=storage&storageid=%s&\
+action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
+            real_url = self.__get_full_url__(self.serverurl, url)
+            headers = Constants.WEBHEADERS
+            headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
+            Utils.Web.do_get(real_url, headers)
+
         jiezhizhuangbei()
         chibangzhuangbei()
         mainzhuangbei()
@@ -366,6 +382,7 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
         zhuansheng_lock = False
         lock.acquire()
         if zhuansheng_lock:
+            lock.release()
             return
         self.zhuanshen()
         self.jiadian()
@@ -385,6 +402,7 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
             jiadian_lock = False
             lock.acquire()
             if jiadian_lock:
+                lock.release()
                 return
             self.jiadian()
             self.gotomainmap()
@@ -413,7 +431,7 @@ def test(a, b):
         tt.findmonster()
         tt.kill(interval)
         # if is in special time, go to special map, as kill will refresh the isspecialtime
-        tt.gotospecialmap(33)
+        #tt.gotospecialmap()
         tt.jiadianintime(interval)
         tt.update()
         interval -= 1
@@ -430,9 +448,13 @@ class MyMultiThread(threading.Thread):
         test(self.a, self.b)
 
 if __name__ == '__main__':
-    for i in range(0, 5):
+    #test("merrymax", "861560")
+    for i in range(0, 1):
         thread = MyMultiThread("merrymax", "861560")
         thread.start()
+        #thread = MyMultiThread("merrymax", "861560")
+        #thread.start()
+
 
 
 

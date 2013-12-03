@@ -21,71 +21,19 @@ PASSWORD = "861560"
 COOKIE_MAP = {
     "merrymax": dict(
 
-INITCOOKIE = "DgQf_2132_saltkey=Vg4eed2e; \
-DgQf_2132_lastvisit=1385380829; DgQf_2132_visitedfid=2; \
-DgQf_2132_st_t=0%7C1385386939%7Ca0f82e7794f28eafbf1f753ca5beaab5; \
-DgQf_2132_forum_lastvisit=D_2_1385386939; DgQf_2132_seccode=150.92721091a3c367af1b; \
-DgQf_2132_lastact=1385386954%09forum.php%09viewthread; \
-DgQf_2132_st_p=0%7C1385386954%7Cdda7eac97f9d8b84e3b0d90d812d8978; \
-DgQf_2132_viewid=tid_57; DgQf_2132_sid=k9N8yM; tjpctrl=1385397431363; \
-8VcR_2132_saltkey=O2O7zj37; 8VcR_2132_lastvisit=1385393186; \
-8VcR_2132_sendmail=1; 8VcR_2132_lastact=1385396789%09forum.php%09; \
-8VcR_2132_onlineusernum=28; 8VcR_2132_sid=LTFx8w; \
-Hm_lvt_09b5da143217ac605e94f557407dd45b=1385299626,1385384428; \
-Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385396778",
+INITCOOKIE = "8VcR_2132_saltkey=iO716tlV; 8VcR_2132_lastvisit=1385644386; 8VcR_2132_ulastactivity=4942AYEVVLZp0%2BAvpOLjxeESXmiKAFx4UAFulsX5j9z7cekVlibn; 8VcR_2132_lastcheckfeed=366%7C1385648008; 8VcR_2132_nofavfid=1; 8VcR_2132_lastact=1385648992%09plugin.php%09; 8VcR_2132_connect_is_bind=0; 8VcR_2132_sid=I8609t; qKKP_2132_saltkey=vjJJ266i; uUKd_2132_saltkey=Qft6PPfJ; uUKd_2132_lastvisit=1385655716; uUKd_2132_ulastactivity=1d2ePlnZX2XbuwpUGLI47YFSoPWheoVEsfpga80PFjtEvSUKUQfd; uUKd_2132_nofavfid=1; uUKd_2132_visitedfid=2; uUKd_2132_smile=1D1; uUKd_2132_sid=XjBBb1; uUKd_2132_lastcheckfeed=366%7C1385684183; uUKd_2132_lastact=1385684189%09plugin.php%09; uUKd_2132_connect_is_bind=0; tjpctrl=1385736473432; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385491212,1385642836,1385684032,1385734661; Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385734767; gsQF_2132_saltkey=Wdab2UUx; gsQF_2132_lastvisit=1385731166; gsQF_2132_wxpet_lastactivity=1385734766; gsQF_2132_lastact=1385734785%09member.php%09logging; gsQF_2132_ulastactivity=a81cQ6BX1d1y4Y%2F81ngMSpWLvDy6uez91GkPkS2SexhKsQJW2P2V; gsQF_2132_sid=zzX6xZ; gsQF_2132_auth=aca0gDx4dX%2BOv33QGXujkElGFDykvSQehm%2B415cms6xpZfry1QbIiPKJUzK%2FaPCfDTDO25YZuU0t135p9NsZlM4; gsQF_2132_lastcheckfeed=366%7C1385734785; gsQF_2132_checkfollow=1; gsQF_2132_lip=222.212.191.110%2C1385734666; gsQF_2132_security_cookiereport=38eef5yLb%2BdvpNp2UWJ8WxhxCzezhbgqaGr7u4BlTbHeFHup1Kzu",
 
-MAINCOOKIE = "8VcR_2132_saltkey=lK5q8L8l; 8VcR_2132_lastvisit=1385393328; \
-8VcR_2132_ulastactivity=382ebs1T3OE7KY5I%2FAd%2FDgF%2BMLsKg4MS6m5R%2FJPV6cp2oxrzHSeQ; \
-8VcR_2132_auth=cc58UheoeBGZA0L91LTkQc5xcaDLM1lhks2LM%2BgAUnsKl%2F7Z\
-WripUxN%2Fsv0Wf2Ok3A5YjKxj5NFSyReYpi45ai4; 8VcR_2132_lastcheckfeed=366%7C1385396940; \
-8VcR_2132_security_cookiereport=3548KJgh5omC%2BuwHWPLa8xkf0bS9Pu57nD4LS2ZfeGGCQWnesHxL; \
-8VcR_2132_nofavfid=1; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385299626,1385384428; \
-Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385396931; 8VcR_2132_sid=H5haz4; \
-8VcR_2132_lip=110.184.92.29%2C1385400628; 8VcR_2132_lastact=1385400779%09plugin.php%09; \
-8VcR_2132_connect_is_bind=0; 8VcR_2132_wxpet_lastactivity=1385400779",
+MAINCOOKIE = "8VcR_2132_saltkey=iO716tlV; 8VcR_2132_lastvisit=1385644386; 8VcR_2132_ulastactivity=4942AYEVVLZp0%2BAvpOLjxeESXmiKAFx4UAFulsX5j9z7cekVlibn; 8VcR_2132_lastcheckfeed=366%7C1385648008; 8VcR_2132_nofavfid=1; 8VcR_2132_connect_is_bind=0; qKKP_2132_saltkey=vjJJ266i; uUKd_2132_saltkey=Qft6PPfJ; uUKd_2132_lastvisit=1385655716; uUKd_2132_ulastactivity=1d2ePlnZX2XbuwpUGLI47YFSoPWheoVEsfpga80PFjtEvSUKUQfd; uUKd_2132_nofavfid=1; uUKd_2132_visitedfid=2; uUKd_2132_smile=1D1; uUKd_2132_lastcheckfeed=366%7C1385684183; uUKd_2132_connect_is_bind=0; gsQF_2132_saltkey=E07fxXFO; gsQF_2132_lastvisit=1385994239; gsQF_2132_ulastactivity=8a75iiPUPQrqENAWv06zDbLKvc0cOeD9uHB1VNdCaPKikV%2FV1zDe; gsQF_2132_auth=667cH3gsFdpqXBbbxImyU7U%2Bftig0M%2BTypb%2Fh3gbphWATk5IZ5k7E5E4awcbTVTv3lulRN1ZNgpUdj7qN2GxiaI; gsQF_2132_lastcheckfeed=465%7C1385997881; gsQF_2132_nofavfid=1; gsQF_2132_sid=ik6ZIk; gsQF_2132_lip=125.69.125.168%2C1386032395; gsQF_2132_lastact=1386032397%09plugin.php%09; gsQF_2132_connect_is_bind=0; spYq_2132_saltkey=TyMVw7AF; spYq_2132_lastvisit=1386066495; spYq_2132_ulastactivity=24f2ssGOg2BYuXG1NHu96xOnFeOl%2Bo7ivGeKRfCuuzfxKHJ%2FVbvN; spYq_2132_auth=4009lsU2qALrTzkXCvfExhIIu1Va1KJz4MporETwOiYW2fnSca3c1Xerv%2BKsKiSHdh2N%2FjF2U9h%2FKZ4prFOmbN4; spYq_2132_security_cookiereport=8527TPfpcZ9l3R78sxXSDZLHI0XaaxK6EY7KpTPN0rpX4b7Gz1ab; spYq_2132_nofavfid=1; tjpctrl=1386071929520; spYq_2132_lip=118.114.111.217%2C1386071112; spYq_2132_sendmail=1; spYq_2132_lastcheckfeed=366%7C1386071119; spYq_2132_myrepeat_rr=R0; spYq_2132_wxpet_lastactivity=1386071146; spYq_2132_sid=CvoA02; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385808464,1385820742,1385942761,1385995746; Hm_lpvt_09b5da143217ac605e94f557407dd45b=1386071186; spYq_2132_lastact=1386071254%09plugin.php%09; spYq_2132_connect_is_bind=0",
 
-KILLCOOKIE = "8VcR_2132_saltkey=lK5q8L8l; \
-8VcR_2132_lastvisit=1385393328; \
-8VcR_2132_ulastactivity=382ebs1T3OE7KY5I%2FAd%2FDgF%2BMLsKg4MS6m5R%2FJPV6cp2oxrzHSeQ; \
-8VcR_2132_auth=cc58UheoeBGZA0L91LTkQc5xcaDLM1lhks2LM%2BgAUnsKl%2F7Z\
-WripUxN%2Fsv0Wf2Ok3A5YjKxj5NFSyReYpi45ai4; 8VcR_2132_lastcheckfeed=366%7C1385396940; \
-8VcR_2132_security_cookiereport=3548KJgh5omC%2BuwHWPLa8xkf0bS9Pu57nD4LS2ZfeGGCQWnesHxL; \
-8VcR_2132_nofavfid=1; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385299626,1385384428; \
-Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385396931; 8VcR_2132_wxpet_lastactivity=1385401838; \
-8VcR_2132_sid=DA8h33; 8VcR_2132_lip=110.184.92.29%2C1385402218; \
-8VcR_2132_lastact=1385402231%09plugin.php%09; 8VcR_2132_connect_is_bind=0"
+KILLCOOKIE = "8VcR_2132_saltkey=iO716tlV; 8VcR_2132_lastvisit=1385644386; 8VcR_2132_ulastactivity=4942AYEVVLZp0%2BAvpOLjxeESXmiKAFx4UAFulsX5j9z7cekVlibn; 8VcR_2132_lastcheckfeed=366%7C1385648008; 8VcR_2132_nofavfid=1; 8VcR_2132_connect_is_bind=0; qKKP_2132_saltkey=vjJJ266i; uUKd_2132_saltkey=Qft6PPfJ; uUKd_2132_lastvisit=1385655716; uUKd_2132_ulastactivity=1d2ePlnZX2XbuwpUGLI47YFSoPWheoVEsfpga80PFjtEvSUKUQfd; uUKd_2132_nofavfid=1; uUKd_2132_visitedfid=2; uUKd_2132_smile=1D1; uUKd_2132_lastcheckfeed=366%7C1385684183; uUKd_2132_connect_is_bind=0; gsQF_2132_saltkey=E07fxXFO; gsQF_2132_lastvisit=1385994239; gsQF_2132_ulastactivity=8a75iiPUPQrqENAWv06zDbLKvc0cOeD9uHB1VNdCaPKikV%2FV1zDe; gsQF_2132_auth=667cH3gsFdpqXBbbxImyU7U%2Bftig0M%2BTypb%2Fh3gbphWATk5IZ5k7E5E4awcbTVTv3lulRN1ZNgpUdj7qN2GxiaI; gsQF_2132_lastcheckfeed=465%7C1385997881; gsQF_2132_nofavfid=1; gsQF_2132_sid=ik6ZIk; gsQF_2132_lip=125.69.125.168%2C1386032395; gsQF_2132_lastact=1386032397%09plugin.php%09; gsQF_2132_connect_is_bind=0; spYq_2132_saltkey=TyMVw7AF; spYq_2132_lastvisit=1386066495; spYq_2132_ulastactivity=24f2ssGOg2BYuXG1NHu96xOnFeOl%2Bo7ivGeKRfCuuzfxKHJ%2FVbvN; spYq_2132_auth=4009lsU2qALrTzkXCvfExhIIu1Va1KJz4MporETwOiYW2fnSca3c1Xerv%2BKsKiSHdh2N%2FjF2U9h%2FKZ4prFOmbN4; spYq_2132_security_cookiereport=8527TPfpcZ9l3R78sxXSDZLHI0XaaxK6EY7KpTPN0rpX4b7Gz1ab; spYq_2132_nofavfid=1; tjpctrl=1386071929520; spYq_2132_sendmail=1; spYq_2132_lastcheckfeed=366%7C1386071119; spYq_2132_myrepeat_rr=R0; spYq_2132_wxpet_lastactivity=1386071146; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385808464,1385820742,1385942761,1385995746; Hm_lpvt_09b5da143217ac605e94f557407dd45b=1386071186; spYq_2132_sid=yvegGZ; spYq_2132_lip=118.114.111.217%2C1386071402; spYq_2132_lastact=1386071405%09plugin.php%09; spYq_2132_connect_is_bind=0"
 ),
     "merrymin": dict(
 
-INITCOOKIE = "8VcR_2132_saltkey=EM2oI2hc; 8VcR_2132_lastvisit=1385641138; \
-8VcR_2132_sendmail=1; 8VcR_2132_lastact=1385644746%09forum.php%09; \
-8VcR_2132_onlineusernum=56; 8VcR_2132_sid=vOqE9z; \
-Hm_lvt_09b5da143217ac605e94f557407dd45b=1385425121,1385473321,1385491212,1385642836; \
-Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385644746",
+INITCOOKIE = "8VcR_2132_saltkey=iO716tlV; 8VcR_2132_lastvisit=1385644386; 8VcR_2132_ulastactivity=4942AYEVVLZp0%2BAvpOLjxeESXmiKAFx4UAFulsX5j9z7cekVlibn; 8VcR_2132_lastcheckfeed=366%7C1385648008; 8VcR_2132_nofavfid=1; 8VcR_2132_connect_is_bind=0; 8VcR_2132_sid=I8609t; qKKP_2132_saltkey=vjJJ266i; uUKd_2132_saltkey=Qft6PPfJ; uUKd_2132_lastvisit=1385655716; uUKd_2132_ulastactivity=1d2ePlnZX2XbuwpUGLI47YFSoPWheoVEsfpga80PFjtEvSUKUQfd; uUKd_2132_nofavfid=1; uUKd_2132_visitedfid=2; uUKd_2132_smile=1D1; uUKd_2132_sid=XjBBb1; uUKd_2132_lastcheckfeed=366%7C1385684183; uUKd_2132_lastact=1385684189%09plugin.php%09; uUKd_2132_connect_is_bind=0; tjpctrl=1385736473432; gsQF_2132_saltkey=nw1zqjcO; gsQF_2132_lastvisit=1385732781; gsQF_2132_st_t=0%7C1385736381%7C3c997615eb3b448568fbc709d60eee38; gsQF_2132_forum_lastvisit=D_38_1385736381; gsQF_2132_visitedfid=38; gsQF_2132_sid=zzX6xZ; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385491212,1385642836,1385684032,1385734661; Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385736387; gsQF_2132_lastact=1385736384%09home.php%09misc; gsQF_2132_sendmail=1",
 
-MAINCOOKIE = "8VcR_2132_saltkey=EM2oI2hc; 8VcR_2132_lastvisit=1385641138; \
-8VcR_2132_sendmail=1; 8VcR_2132_onlineusernum=56; \
-8VcR_2132_ulastactivity=37454px2BF29BTq%2FX3gSBAiuqBOYM9T6fsSJKlX29ghAB0w16JQ%2F; \
-8VcR_2132_auth=9319G33anC8%2FFVFys3BFLmM54cIsjC0YJxNcMPhSIS6MYLJCe4b28Pb8hs8jx\
-CZt5n%2BAhYvOoLkVOuAGZ9haXQo; 8VcR_2132_lastcheckfeed=465%7C1385644856; \
-8VcR_2132_lip=182.148.123.85%2C1385639820; 8VcR_2132_security_cookiereport=\
-655cebr3ShmHWRfZo4dlnHaqpOTJMlCTGBSM0RLGiJPM%2Blf3St8o; 8VcR_2132_nofavfid=1; \
-8VcR_2132_sid=vOqE9z; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385425121,1385473321,\
-1385491212,1385642836; Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385644857; \
-tjpctrl=1385646657431; 8VcR_2132_lastact=1385644987%09plugin.php%09; \
-8VcR_2132_connect_is_bind=0; 8VcR_2132_wxpet_lastactivity=1385644987",
+MAINCOOKIE = "8VcR_2132_saltkey=iO716tlV; 8VcR_2132_lastvisit=1385644386; 8VcR_2132_ulastactivity=4942AYEVVLZp0%2BAvpOLjxeESXmiKAFx4UAFulsX5j9z7cekVlibn; 8VcR_2132_lastcheckfeed=366%7C1385648008; 8VcR_2132_nofavfid=1; 8VcR_2132_connect_is_bind=0; 8VcR_2132_sid=I8609t; qKKP_2132_saltkey=vjJJ266i; uUKd_2132_saltkey=Qft6PPfJ; uUKd_2132_lastvisit=1385655716; uUKd_2132_ulastactivity=1d2ePlnZX2XbuwpUGLI47YFSoPWheoVEsfpga80PFjtEvSUKUQfd; uUKd_2132_nofavfid=1; uUKd_2132_visitedfid=2; uUKd_2132_smile=1D1; uUKd_2132_sid=XjBBb1; uUKd_2132_lastcheckfeed=366%7C1385684183; uUKd_2132_lastact=1385684189%09plugin.php%09; uUKd_2132_connect_is_bind=0; tjpctrl=1385736473432; gsQF_2132_saltkey=nw1zqjcO; gsQF_2132_lastvisit=1385732781; gsQF_2132_visitedfid=38; gsQF_2132_sendmail=1; gsQF_2132_ulastactivity=75b4RLLV4nCI5FqonPsNVdqckS16JW7CGNP4Fsy0MNeH%2BLshXpj6; gsQF_2132_auth=a3d6UC%2Fkecbc4Io4HQ1Rh%2Ba26r%2Bvnvbh65QPJW%2BCOHmzl5M8YVSCC4sdY%2BNeSr20NDWO4AE9AEF3zJ4ujv%2FDW90; gsQF_2132_lastcheckfeed=465%7C1385736394; gsQF_2132_lip=222.212.191.110%2C1385736322; gsQF_2132_security_cookiereport=625342VJidUQr341C2j8VFlMplWw0FMz1FvLyIaGqIH1Z6xHNRqQ; gsQF_2132_st_t=465%7C1385736397%7C64f85f378d5982afefecdb7c28c47baa; gsQF_2132_forum_lastvisit=D_38_1385736397; gsQF_2132_sid=zzX6xZ; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385491212,1385642836,1385684032,1385734661; Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385736402; gsQF_2132_lastact=1385736448%09plugin.php%09; gsQF_2132_connect_is_bind=0; gsQF_2132_wxpet_lastactivity=1385736448",
 
-KILLCOOKIE = "8VcR_2132_saltkey=EM2oI2hc; 8VcR_2132_lastvisit=1385641138; \
-8VcR_2132_ulastactivity=37454px2BF29BTq%2FX3gSBAiuqBOYM9T6fsSJKlX29ghAB0w16JQ%2F; \
-8VcR_2132_auth=9319G33anC8%2FFVFys3BFLmM54cIsjC0YJxNcMPhSIS6MYLJCe4b28Pb8hs8jx\
-CZt5n%2BAhYvOoLkVOuAGZ9haXQo; 8VcR_2132_lip=182.148.123.85%2C1385639820; \
-8VcR_2132_security_cookiereport=655cebr3ShmHWRfZo4dlnHaqpOTJMlCTGBSM0RLGiJPM%2Blf3St8o; \
-8VcR_2132_nofavfid=1; tjpctrl=1385646657431; 8VcR_2132_wxpet_lastactivity=1385644987; \
-8VcR_2132_sid=vOqE9z; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385425121,\
-1385473321,1385491212,1385642836; Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385645077; \
-8VcR_2132_sendmail=1; 8VcR_2132_checkpm=1; 8VcR_2132_lastcheckfeed=465%7C1385645079; \
-8VcR_2132_checkfollow=1; 8VcR_2132_lastact=1385645095%09plugin.php%09; \
-8VcR_2132_connect_is_bind=0"
+KILLCOOKIE = "8VcR_2132_saltkey=iO716tlV; 8VcR_2132_lastvisit=1385644386; 8VcR_2132_ulastactivity=4942AYEVVLZp0%2BAvpOLjxeESXmiKAFx4UAFulsX5j9z7cekVlibn; 8VcR_2132_lastcheckfeed=366%7C1385648008; 8VcR_2132_nofavfid=1; 8VcR_2132_connect_is_bind=0; 8VcR_2132_sid=I8609t; qKKP_2132_saltkey=vjJJ266i; uUKd_2132_saltkey=Qft6PPfJ; uUKd_2132_lastvisit=1385655716; uUKd_2132_ulastactivity=1d2ePlnZX2XbuwpUGLI47YFSoPWheoVEsfpga80PFjtEvSUKUQfd; uUKd_2132_nofavfid=1; uUKd_2132_visitedfid=2; uUKd_2132_smile=1D1; uUKd_2132_sid=XjBBb1; uUKd_2132_lastcheckfeed=366%7C1385684183; uUKd_2132_lastact=1385684189%09plugin.php%09; uUKd_2132_connect_is_bind=0; gsQF_2132_saltkey=nw1zqjcO; gsQF_2132_lastvisit=1385732781; gsQF_2132_visitedfid=38; gsQF_2132_sendmail=1; gsQF_2132_ulastactivity=75b4RLLV4nCI5FqonPsNVdqckS16JW7CGNP4Fsy0MNeH%2BLshXpj6; gsQF_2132_auth=a3d6UC%2Fkecbc4Io4HQ1Rh%2Ba26r%2Bvnvbh65QPJW%2BCOHmzl5M8YVSCC4sdY%2BNeSr20NDWO4AE9AEF3zJ4ujv%2FDW90; gsQF_2132_lip=222.212.191.110%2C1385736322; gsQF_2132_security_cookiereport=625342VJidUQr341C2j8VFlMplWw0FMz1FvLyIaGqIH1Z6xHNRqQ; gsQF_2132_st_t=465%7C1385736397%7C64f85f378d5982afefecdb7c28c47baa; gsQF_2132_forum_lastvisit=D_38_1385736397; gsQF_2132_wxpet_lastactivity=1385736448; gsQF_2132_lastcheckfeed=465%7C1385736547; gsQF_2132_checkfollow=1; gsQF_2132_checkpm=1; tjpctrl=1385738351029; gsQF_2132_sid=zzX6xZ; Hm_lvt_09b5da143217ac605e94f557407dd45b=1385491212,1385642836,1385684032,1385734661; Hm_lpvt_09b5da143217ac605e94f557407dd45b=1385736559; gsQF_2132_lastact=1385736571%09plugin.php%09; gsQF_2132_connect_is_bind=0"
     )}
 
 ZHUAN_LEVEL_MAP = {"0": 6,
@@ -115,4 +63,4 @@ SPECIAL_MAP = {33, 34, 35, 38}
 
 ZHUAN_LEVEL_ZHUANGBEI = {}
 
-INTERVAL = 2
+INTERVAL = 20

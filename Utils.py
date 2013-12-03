@@ -66,7 +66,12 @@ class Web(object):
 
     @staticmethod
     def get_cookie(response, ismultiple=False):
-        cookie_temp = response["set-cookie"]
+        print response
+        try:
+            cookie_temp = response["set-cookie"]
+        except:
+            pass
+            return None
         # if there are more than one "set-cookie" segment
         # all of them will be joined by ,
         # A known issue is that the expire attribute with ","
