@@ -181,8 +181,11 @@ action=callmsleep&timestamp=1385401239678'
             since before, each time of killing will search, it will cost time
         """
         print "start to kill monster"
+        skill = "noskill"
+        if self.ZHUAN > 0:
+            skill = "mlightbomb"
         url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=fight&\
-skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
+skillname=%s&pkcode=%s&autosell=0&timestamp=1385401456697' % (skill, self.pkcode)
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
         headers["Cookie"] = Constants.COOKIE_MAP[self.username]["KILLCOOKIE"]
@@ -191,7 +194,8 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
         try:
             self.skillcount,self.LEVEL, self.CANZHUAN, self.pkcode = Utils.StrUtils.getstrgroup(cnt, regex)
             self.isspecialtime = self.checkwhetherinspecialtime(self.getservertime(rsp))
-            print "zhuan ==> %s | level ==> %s | to_be_level = %s" % (self.ZHUAN, self.LEVEL, self.CANZHUAN)
+            print "shi ==> %s | zhuan ==> %s | level ==> %s | to_be_level = %s" % \
+                  (self.SHI, self.ZHUAN, self.LEVEL, self.CANZHUAN)
         except Exception, e:
             print cnt
             self.skillcount = 0
@@ -233,6 +237,33 @@ skillname=mlightbomb&pkcode=%s&autosell=0&timestamp=1385401456697' % self.pkcode
         headers = Constants.WEBHEADERS
         headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_post(real_url, headers, login_data)
+
+    def zhuanshiaffair(self):
+        print "start to go to office"
+        url = 'plugin.php?id=wxpet:pet&index=office'
+        real_url = self.__get_full_url__(self.serverurl, url)
+        headers = Constants.WEBHEADERS
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["KILLCOOKIE"]
+        rsp, cnt = Utils.Web.do_get(real_url, headers)
+        print cnt
+        zhuanshiinfo = Utils.StrUtils.getstrgroup(cnt, "转世\((\d+)转可转世,现在宠物(\d+)世")
+        canzhuanshi = zhuanshiinfo[0]
+        formhash = Utils.StrUtils.search(cnt, "formhash=(\w+)")
+        print canzhuanshi
+        if canzhuanshi >= self.ZHUAN:
+            self.zhuanshi(formhash)
+
+    def zhuanshi(self, formhash):
+        print "start to zhuanshi"
+        url = "plugin.php?id=wxpet:pet&index=office&action=world"
+        real_url = self.__get_full_url__(self.serverurl, url)
+        zhuanshi_data = {
+                'formhash':     formhash,
+                'petworld':     self.SHI
+        }
+        headers = Constants.WEBHEADERS
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
+        rsp, cnt = Utils.Web.do_post(real_url, headers, zhuanshi_data)
 
     def jiadian(self):
         self.gotopetattributemenu()
@@ -385,6 +416,7 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
             lock.release()
             return
         self.zhuanshen()
+        self.zhuanshiaffair()
         self.jiadian()
         self.zhuangbei()
         self.learnskill()
