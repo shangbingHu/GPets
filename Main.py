@@ -250,7 +250,7 @@ skillname=%s&pkcode=%s&autosell=0&timestamp=1385401456697' % (skill, self.pkcode
         canzhuanshi = zhuanshiinfo[0]
         formhash = Utils.StrUtils.search(cnt, "formhash=(\w+)")
         print canzhuanshi
-        if canzhuanshi >= self.ZHUAN:
+        if canzhuanshi <= self.ZHUAN:
             self.zhuanshi(formhash)
 
     def zhuanshi(self, formhash):
