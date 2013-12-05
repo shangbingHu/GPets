@@ -182,7 +182,7 @@ action=callmsleep&timestamp=1385401239678'
         """
         print "start to kill monster"
         skill = "noskill"
-        if self.ZHUAN > 0:
+        if int(self.ZHUAN) > 0:
             skill = "mlightbomb"
         url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=fight&\
 skillname=%s&pkcode=%s&autosell=0&timestamp=1385401456697' % (skill, self.pkcode)
@@ -243,13 +243,12 @@ skillname=%s&pkcode=%s&autosell=0&timestamp=1385401456697' % (skill, self.pkcode
         url = 'plugin.php?id=wxpet:pet&index=office'
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
-        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["KILLCOOKIE"]
+        headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
-        print cnt
         zhuanshiinfo = Utils.StrUtils.getstrgroup(cnt, "转世\((\d+)转可转世,现在宠物(\d+)世")
         canzhuanshi = zhuanshiinfo[0]
         formhash = Utils.StrUtils.search(cnt, "formhash=(\w+)")
-        print canzhuanshi
+        print "<== zhuan of %s can zhuanshi ==>" % canzhuanshi
         if canzhuanshi <= self.ZHUAN:
             self.zhuanshi(formhash)
 
@@ -258,8 +257,8 @@ skillname=%s&pkcode=%s&autosell=0&timestamp=1385401456697' % (skill, self.pkcode
         url = "plugin.php?id=wxpet:pet&index=office&action=world"
         real_url = self.__get_full_url__(self.serverurl, url)
         zhuanshi_data = {
+                'petworld':     1,
                 'formhash':     formhash,
-                'petworld':     self.SHI
         }
         headers = Constants.WEBHEADERS
         headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
