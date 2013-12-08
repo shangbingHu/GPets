@@ -31,7 +31,7 @@ class Web(object):
             try:
                 if retry_time > 5:
                     raise Exception("bad server or network")
-                response, content = http.request(url, 'GET', headers=headers)
+                response, content = http.request(url, "GET", headers=headers)
                 break
             except Exception, e:
                 time.sleep(120)
@@ -40,7 +40,7 @@ class Web(object):
                 print "retry for %s time" % retry_time
             finally:
                 pass
-        return response, content
+        return response, content.decode('gbk').encode('utf-8')
 
     @staticmethod
     def do_post(url, headers=None, data={}):
@@ -61,7 +61,7 @@ class Web(object):
                 print "retry for %s time" % retry_time
             finally:
                 pass
-        return response, content
+        return response, content.decode('gbk').encode('utf-8')
 
 
     @staticmethod
