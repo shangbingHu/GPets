@@ -89,7 +89,7 @@ class Game(object):
         headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
 
-    def gotomap(self, mapid=24):
+    def gotomap(self, mapid=None):
         self.gotopetattributemenu()
         if not mapid:
             mapid = self.selectmapforzhuan(self.ZHUAN)
@@ -108,7 +108,9 @@ class Game(object):
         value = "0"
         last_chaju = 100
         for key in Constants.ZHUAN_LEVEL_MAP.keys():
-            if int(zhuan) < 22:
+            #if self.ZHUAN > 60 and  self.LEVEL > 3500:
+            #    return 35
+            if int(zhuan) < 22 or (int(zhuan) >= 48):
                 chaju = int(zhuan) - int(key)
             else:
                 chaju = int(zhuan) - int(key) + 2
@@ -130,12 +132,26 @@ class Game(object):
 
     def jiabei(self, mapcnt):
         print "start to jiabei"
+        def getcardlevel():
+            level = ("双", "四", "八", "十二", "二十", "二十四")
+            print("Now, pet is %s zhuan" % self.ZHUAN)
+            zhuan = int(self.ZHUAN)
+            if zhuan > 5 and zhuan < 10:
+                return level[0]
+            elif zhuan >= 10 and zhuan < 20:
+                return level[1]
+            elif zhuan >= 20 and zhuan < 40:
+                return level[2]
+            elif zhuan >= 40:
+                return level[5]
+            return level[0]
         def getkaid(mapcnt):
-            kaid = Utils.StrUtils.search(mapcnt, "经验卡&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
-<font color=darkgreen><span id='item(\d+)")
+            cardlevel = getcardlevel()
+            kaid = Utils.StrUtils.search(mapcnt, "%s倍经验卡&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
+<font color=darkgreen><span id='item(\d+)" % cardlevel)
             if not kaid:
-                kaid = Utils.StrUtils.search(mapcnt, "经验卡&#8226签&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
-<font color=darkgreen><span id='item(\d+)")
+                kaid = Utils.StrUtils.search(mapcnt, "倍经验卡&#8226签&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
+<font color=darkgreen><span id='item(\d+)" % cardlevel)
             return kaid
         kaid = getkaid(mapcnt)
         if not kaid:
@@ -251,6 +267,8 @@ skillname=%s&pkcode=%s&autosell=0&timestamp=1385401456697' % (skill, self.pkcode
         rsp, cnt = Utils.Web.do_get(real_url, headers)
 
         canzhuanshi = 31 + int(self.SHI) * 5
+        if canzhuanshi > 71:
+            canzhuanshi = 71
         formhash = Utils.StrUtils.search(cnt, "formhash=(\w+)")
         print "<== zhuan of %s can zhuanshi ==>" % canzhuanshi
         if canzhuanshi <= int(self.ZHUAN):
@@ -334,7 +352,7 @@ skillname=%s&pkcode=%s&autosell=0&timestamp=1385401456697' % (skill, self.pkcode
             headers = Constants.WEBHEADERS
             headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
             rsp, cnt = Utils.Web.do_get(real_url, headers)
-            jiezhiid = Utils.StrUtils.search(cnt, 'id="cname(\d+)" value="经验之戒"')
+            jiezhiid = Utils.StrUtils.search(cnt, 'id="cname(\d+)" value="贪婪之戒"')
             url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=storage&storageid=%s&\
 action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
             real_url = self.__get_full_url__(self.serverurl, url)
@@ -348,7 +366,7 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
             headers = Constants.WEBHEADERS
             headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
             rsp, cnt = Utils.Web.do_get(real_url, headers)
-            jiezhiid = Utils.StrUtils.search(cnt, 'id="cname(\d+)" value="天使之翼"')
+            jiezhiid = Utils.StrUtils.search(cnt, 'id="cname(\d+)" value="幻宠神翼"')
             url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=storage&storageid=%s&\
 action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
             real_url = self.__get_full_url__(self.serverurl, url)
@@ -356,8 +374,23 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
             headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
             Utils.Web.do_get(real_url, headers)
 
+
+        def fabaozhuangbei():
+            url = 'plugin.php?id=wxpet:pet&index=storage&itemtype=8'
+            real_url = self.__get_full_url__(self.serverurl, url)
+            headers = Constants.WEBHEADERS
+            headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
+            rsp, cnt = Utils.Web.do_get(real_url, headers)
+            jiezhiid = Utils.StrUtils.search(cnt, 'id="cname(\d+)" value="「鬼器」摄魂铃"')
+            url = 'plugin.php?id=wxpet:pet&type=ajax&ajaxindex=storage&storageid=%s&\
+action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
+            real_url = self.__get_full_url__(self.serverurl, url)
+            headers = Constants.WEBHEADERS
+            headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
+            Utils.Web.do_get(real_url, headers)
         jiezhizhuangbei()
         chibangzhuangbei()
+        fabaozhuangbei()
         mainzhuangbei()
 
     def learnskill(self):
