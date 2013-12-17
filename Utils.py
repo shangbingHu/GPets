@@ -151,3 +151,7 @@ class TimeUtils(object):
         hour = int(hour) + 8
         return week, hour
 
+    @staticmethod
+    def getcurrenttime():
+        tm = time.localtime()
+        return time.strftime("%Y-%m-%d %H:%M:%S", tm)

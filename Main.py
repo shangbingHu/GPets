@@ -39,9 +39,13 @@ class Game(object):
 
     def writetolog(self, content):
         fp = None
-        fp = open("log", "w")
-        fp.write(content)
-        fp.close()
+        try:
+            fp = open("log", "a+")
+            fp.write(content + "\n")
+        except Exception, e:
+            raise Exception(e)
+        finally:
+            fp.close()
 
     def __get_full_url__(self, url_prefix="", url=""):
         if url_prefix:
@@ -89,6 +93,11 @@ class Game(object):
         headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
 
+    #   28  --  金钱地图
+    #   29  --  宝石地图
+    #   35  --  寻仙
+    #   38  --  喜之
+    #   42  --  修真2
     def gotomap(self, mapid=None):
         self.gotopetattributemenu()
         if not mapid:
@@ -140,17 +149,17 @@ class Game(object):
                 return level[0]
             elif zhuan >= 10 and zhuan < 20:
                 return level[1]
-            elif zhuan >= 20 and zhuan < 40:
+            elif zhuan >= 20 and zhuan < 60:
                 return level[2]
-            elif zhuan >= 40:
-                return level[5]
+            elif zhuan >= 60:
+                return level[3]
             return level[0]
         def getkaid(mapcnt):
             cardlevel = getcardlevel()
-            kaid = Utils.StrUtils.search(mapcnt, "%s倍经验卡&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
+            kaid = Utils.StrUtils.search(mapcnt, ">%s倍经验卡&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
 <font color=darkgreen><span id='item(\d+)" % cardlevel)
             if not kaid:
-                kaid = Utils.StrUtils.search(mapcnt, "倍经验卡&#8226签&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
+                kaid = Utils.StrUtils.search(mapcnt, ">%s倍经验卡&#8226签&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
 <font color=darkgreen><span id='item(\d+)" % cardlevel)
             return kaid
         kaid = getkaid(mapcnt)
@@ -209,15 +218,28 @@ skillname=%s&pkcode=%s&autosell=0&timestamp=1385401456697' % (skill, self.pkcode
         headers["Cookie"] = Constants.COOKIE_MAP[self.username]["KILLCOOKIE"]
         rsp, cnt = Utils.Web.do_get(real_url, headers)
         print cnt
-        regex = '(\w+)npc\(.*剩余\s+(\d+)\s+回合.*\[(\d+)\]\]></petlevel>.*<pkcode>(\d+)</pkcode>'
+        if cnt.count("1个") <= 0:
+            regex = '(\w+)npc\(.*剩余\s+(\d+)\s+回合.*\[(\d+)\]\]></petlevel>.*<pkcode>(\d+)</pkcode>'
+        else:
+            regex = '(\w+)npc\(.*剩余\s+(\d+)\s+回合.*获得1个<font color=red>(.*)</font></b>\]\]></showtxt5>.*\
+\[(\d+)\]\]></petlevel>.*<pkcode>(\d+)</pkcode>'
         try:
-            action, self.skillcount, self.LEVEL, self.pkcode = Utils.StrUtils.getstrgroup(cnt, regex)
+            sth = None
+            kill_result = Utils.StrUtils.getstrgroup(cnt, regex)
+            if len(kill_result) == 4:
+                action, self.skillcount, self.LEVEL, self.pkcode = Utils.StrUtils.getstrgroup(cnt, regex)
+            else:
+                action, self.skillcount, sth, self.LEVEL, self.pkcode = Utils.StrUtils.getstrgroup(cnt, regex)
+            #action, sth, self.skillcount, self.LEVEL, self.pkcode = Utils.StrUtils.getstrgroup(cnt, regex)
             #self.isspecialtime = self.checkwhetherinspecialtime(self.getservertime(rsp))
             print "action ===> %s | shi ==> %s | zhuan ==> %s | level ==> %s | to_be_level = %s" % \
                   (action, self.SHI, self.ZHUAN, self.LEVEL, self.CANZHUAN)
             if action == Constants.ACTION["runnpc"]:
                 self.skill()
                 self.kill(interval)
+            if sth:
+                self.writetolog("At map %s | At time %s | Get %s" % (self.mapid,
+                                                                     Utils.TimeUtils.getcurrenttime(), sth))
         except Exception, e:
             #print cnt
             self.skillcount = 0
@@ -241,6 +263,8 @@ skillname=%s&pkcode=%s&autosell=0&timestamp=1385401456697' % (skill, self.pkcode
 
     def zhuanshen(self):
         print "start to zhuanshen"
+        self.writetolog("zhuanshen from %s to %s at %s" % (self.ZHUAN, int(self.ZHUAN) + 1,
+                                                           Utils.TimeUtils.getcurrenttime()))
         url = 'plugin.php?id=wxpet:pet&index=petjob'
         real_url = self.__get_full_url__(self.serverurl, url)
         headers = Constants.WEBHEADERS
@@ -276,6 +300,8 @@ skillname=%s&pkcode=%s&autosell=0&timestamp=1385401456697' % (skill, self.pkcode
 
     def zhuanshi(self, formhash):
         print "start to zhuanshi"
+        self.writetolog("zhuanshi from %s to %s at %s" % (self.SHI, int(self.SHI) + 1,
+                                                          Utils.TimeUtils.getcurrenttime()))
         url = "plugin.php?id=wxpet:pet&index=office&action=world"
         real_url = self.__get_full_url__(self.serverurl, url)
         zhuanshi_data = {
