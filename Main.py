@@ -117,8 +117,8 @@ class Game(object):
         value = "0"
         last_chaju = 100
         for key in Constants.ZHUAN_LEVEL_MAP.keys():
-            #if self.ZHUAN > 60 and  self.LEVEL > 3500:
-            #    return 35
+            if int(self.ZHUAN) > 10:
+                return 36
             if int(zhuan) < 22 or (int(zhuan) >= 48):
                 chaju = int(zhuan) - int(key)
             else:
@@ -145,11 +145,11 @@ class Game(object):
             level = ("双", "四", "八", "十二", "二十", "二十四")
             print("Now, pet is %s zhuan" % self.ZHUAN)
             zhuan = int(self.ZHUAN)
-            if zhuan > 5 and zhuan < 10:
+            if zhuan > 5 and zhuan < 30:
                 return level[0]
-            elif zhuan >= 10 and zhuan < 20:
+            elif zhuan >= 30 and zhuan < 40:
                 return level[1]
-            elif zhuan >= 20 and zhuan < 60:
+            elif zhuan >= 40 and zhuan < 60:
                 return level[2]
             elif zhuan >= 60:
                 return level[3]
