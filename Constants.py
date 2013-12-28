@@ -62,6 +62,6 @@ SPECIAL_MAP = {33, 34, 35, 38}
 
 ZHUAN_LEVEL_ZHUANGBEI = {}
 
-INTERVAL = 100
+INTERVAL = 50
 
 ACTION = {"findnpc": "find", "runnpc":"run"}

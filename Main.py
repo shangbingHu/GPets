@@ -116,9 +116,10 @@ class Game(object):
         print "Zhuan: %s" % zhuan
         value = "0"
         last_chaju = 100
+        return 28
         for key in Constants.ZHUAN_LEVEL_MAP.keys():
-            if int(self.ZHUAN) > 10:
-                return 36
+            #if int(self.LEVEL) > 2000 or (int(self.ZHUAN) < 20 and int(self.LEVEL) > 2):
+            #    return 35
             if int(zhuan) < 22 or (int(zhuan) >= 48):
                 chaju = int(zhuan) - int(key)
             else:
@@ -141,6 +142,7 @@ class Game(object):
 
     def jiabei(self, mapcnt):
         print "start to jiabei"
+        return
         def getcardlevel():
             level = ("双", "四", "八", "十二", "二十", "二十四")
             print("Now, pet is %s zhuan" % self.ZHUAN)
@@ -162,6 +164,12 @@ class Game(object):
                 kaid = Utils.StrUtils.search(mapcnt, ">%s倍经验卡&#8226签&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
 <font color=darkgreen><span id='item(\d+)" % cardlevel)
             return kaid
+
+        def getmoneykaid(mapcnt):
+            kaid = Utils.StrUtils.search(mapcnt, ">双倍金钱卡\(回合\)&nbsp;&nbsp;&nbsp;&nbsp;<br>数量：\
+<font color=darkgreen><span id='item(\d+)")
+            return kaid
+
         kaid = getkaid(mapcnt)
         if not kaid:
             return
@@ -347,14 +355,14 @@ skillname=%s&pkcode=%s&autosell=0&timestamp=1385401456697' % (skill, self.pkcode
                 index = 0
                 dest_index = 0
                 for line in cnt_list:
-                    if line == '<td align="center" width="10%">神器＆江河万古流<br>':
+                    if line == '<td align="center" width="10%">神器＆谈笑舞乾坤<br>':
                         dest_index = index + 4
                         break
                     index += 1
                 if not dest_index:
                     index = 0
                     for line in cnt_list:
-                        if line == '<td align="center" width="10%">神器＆江河万古流<br>':
+                        if line == '<td align="center" width="10%">神器＆谈笑舞乾坤<br>':
                             dest_index = index + 4
                             break
                         index += 1
@@ -517,6 +525,16 @@ action=wear&nums=1&timestamp=1385542559337' % (jiezhiid)
         if refreshlevel:
             self.LEVEL = 0
 
+    def cunqian(self, interval=120):
+        if interval <= 0:
+            print "Start to cun qian"
+            url = "plugin.php?id=wxpet:pet&type=ajax&ajaxindex=bank&action=deposit\
+&nums=80000000&tousername=&timestamp=1388076705594"
+            real_url = self.__get_full_url__(self.serverurl, url)
+            headers = Constants.WEBHEADERS
+            headers["Cookie"] = Constants.COOKIE_MAP[self.username]["MAINCOOKIE"]
+            rsp, cnt = Utils.Web.do_get(real_url, headers)
+
 def test(a, b):
     tt = Game(a, b)
     tt.gotomainmenu()
@@ -528,8 +546,9 @@ def test(a, b):
         tt.skill()
         tt.findmonster()
         tt.kill(interval)
-        tt.jiadianintime(interval)
-        tt.update()
+        #tt.jiadianintime(interval)
+        tt.cunqian(interval)
+        #tt.update()
         interval -= 1
         if interval < 0:
             interval = Constants.INTERVAL
